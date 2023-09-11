@@ -1,18 +1,13 @@
 package com.example.gimnasioulima.ui.theme.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -33,13 +28,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import coil.transform.CircleCropTransformation
-import com.example.gimnasioulima.ui.theme.Grey40
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.gimnasioulima.ui.theme.Orange40
 
 @Composable
@@ -51,25 +44,19 @@ fun IconButtonView(iconImg: ImageVector, description: String) {
     ) {
         Icon(
             imageVector = iconImg,
-            contentDescription = description
+            contentDescription = description,
+            tint = Color.Gray
         )
     }
 }
 
 @Composable
-fun ImageView(url: String, height: Int, width: Int) {
-    val painter = // You can apply transformations here if needed
-        rememberAsyncImagePainter(
-            ImageRequest.Builder(LocalContext.current).data(data = url).apply(block = fun ImageRequest.Builder.() {
-                // You can apply transformations here if needed
-                transformations(CircleCropTransformation())
-            }).build()
-        )
-    Image(
-        painter = painter,
-        contentDescription = "Fotografía del Usuario",
-        modifier = Modifier
-            .size(width.dp, height.dp)
+fun ImageView(url: String, description: String) {
+    AsyncImage(
+        model = url,
+        contentDescription = description,
+        modifier = Modifier.clip(CircleShape).size(100.dp),
+        contentScale = ContentScale.Crop
     )
 }
 
@@ -79,8 +66,7 @@ fun ButtonView(text: String) {
         onClick = {
 
         },
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = Orange40, // Button background color
             contentColor = Color.Black
@@ -99,37 +85,45 @@ fun DividerView() {
     Divider(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp), // Adjust padding as needed
-        thickness = 1.5.dp // You can set the thickness of the divider
+            .padding(vertical = 15.dp), // Adjust padding as needed
+        thickness = 2.dp // You can set the thickness of the divider
     )
 }
 
 @Composable
 fun ProfileScreen(){
     val imageUrl = "https://e.rpp-noticias.io/xlarge/2021/11/02/140114_1168254.jpg" // Replace with your image URL
-    Box(
-    ) {
+    Column {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButtonView(Icons.Default.ArrowBack, "Back Button")
             IconButtonView(Icons.Default.Edit, "Edit button")
         }
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 40.dp, vertical = 30.dp)
+            modifier = Modifier.padding(
+                horizontal = 40.dp,
+                vertical = 30.dp
+            )
         ) {
             Row {
-                ImageView(url = imageUrl, width = 100, height = 100)
+                ImageView(
+                    url = imageUrl,
+                    description = "Foto de Usuario"
+                )
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier.padding(horizontal = 25.dp),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = "Carlos Tevez",
-                        fontWeight = FontWeight.Bold
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Black
                     )
-                    Row() {
+                    Row(
+
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Person,
                             contentDescription = "Icono de Persona")
@@ -144,7 +138,10 @@ fun ProfileScreen(){
                     )
                 }
             }
-            Row {
+            Row(
+                modifier = Modifier.padding(start = 15.dp, top = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Icon(
                     Icons.Default.Phone,
                     contentDescription = "Icono de Persona")
@@ -153,7 +150,10 @@ fun ProfileScreen(){
                     color = Color.Gray
                 )
             }
-            Row {
+            Row(
+                modifier = Modifier.padding(start = 15.dp, bottom = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Icon(
                     Icons.Default.Email,
                     contentDescription = "Icono de Usuario")
@@ -164,18 +164,26 @@ fun ProfileScreen(){
             }
             ButtonView("Actualizar Datos")
             DividerView()
-            Row {
-                Column {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
                     Text(
                         text = "22",
-                        fontWeight = FontWeight.Bold
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Black
                     )
-                    Text("Ejercicios Asignadas")
+                    Text("Ejercicios Asignados")
                 }
-                Column {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
                         text = "4",
-                        fontWeight = FontWeight.Bold
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Black
                     )
                     Text("Partes del Cuerpo Entrenadas")
                 }
