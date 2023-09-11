@@ -55,7 +55,9 @@ fun ImageView(url: String, description: String) {
     AsyncImage(
         model = url,
         contentDescription = description,
-        modifier = Modifier.clip(CircleShape).size(100.dp),
+        modifier = Modifier
+            .clip(CircleShape)
+            .size(100.dp),
         contentScale = ContentScale.Crop
     )
 }
@@ -91,11 +93,102 @@ fun DividerView() {
 }
 
 @Composable
-fun ProfileScreen(){
+fun TopSection() {
     val imageUrl = "https://e.rpp-noticias.io/xlarge/2021/11/02/140114_1168254.jpg" // Replace with your image URL
+    Row {
+        ImageView(
+            url = imageUrl,
+            description = "Foto de Usuario"
+        )
+        Column(
+            modifier = Modifier.padding(horizontal = 25.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Carlos Tevez",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Black
+            )
+            Row {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Icono de Persona")
+                Text(
+                    text = "ctevez",
+                    color = Color.Gray
+                )
+            }
+            Text(
+                text = "Crossfitero",
+                color = Color.Gray
+            )
+        }
+    }
+}
+
+@Composable
+fun MidSection() {
+    Row(
+        modifier = Modifier.padding(start = 15.dp, top = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Icon(
+            Icons.Default.Phone,
+            contentDescription = "Icono de Persona")
+        Text(
+            text = "999 888 777",
+            color = Color.Gray
+        )
+    }
+    Row(
+        modifier = Modifier.padding(start = 15.dp, bottom = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Icon(
+            Icons.Default.Email,
+            contentDescription = "Icono de Usuario")
+        Text(
+            text = "20041122@aloe.ulima.edu.pe",
+            color = Color.Gray
+        )
+    }
+}
+
+@Composable
+fun BottomSection() {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Text(
+                text = "22",
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Black
+            )
+            Text("Ejercicios Asignados")
+        }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "4",
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Black
+            )
+            Text("Partes del Cuerpo Entrenadas")
+        }
+    }
+}
+
+@Composable
+fun ProfileScreen(){
     Column {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButtonView(Icons.Default.ArrowBack, "Back Button")
@@ -107,87 +200,11 @@ fun ProfileScreen(){
                 vertical = 30.dp
             )
         ) {
-            Row {
-                ImageView(
-                    url = imageUrl,
-                    description = "Foto de Usuario"
-                )
-                Column(
-                    modifier = Modifier.padding(horizontal = 25.dp),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = "Carlos Tevez",
-                        fontSize = 25.sp,
-                        fontWeight = FontWeight.Black
-                    )
-                    Row(
-
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = "Icono de Persona")
-                        Text(
-                            text = "ctevez",
-                            color = Color.Gray
-                        )
-                    }
-                    Text(
-                        text = "Crossfitero",
-                        color = Color.Gray
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.padding(start = 15.dp, top = 20.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Icon(
-                    Icons.Default.Phone,
-                    contentDescription = "Icono de Persona")
-                Text(
-                    text = "999 888 777",
-                    color = Color.Gray
-                )
-            }
-            Row(
-                modifier = Modifier.padding(start = 15.dp, bottom = 20.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Icon(
-                    Icons.Default.Email,
-                    contentDescription = "Icono de Usuario")
-                Text(
-                    text = "20041122@aloe.ulima.edu.pe",
-                    color = Color.Gray
-                )
-            }
+            TopSection()
+            MidSection()
             ButtonView("Actualizar Datos")
             DividerView()
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    Text(
-                        text = "22",
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Black
-                    )
-                    Text("Ejercicios Asignados")
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "4",
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Black
-                    )
-                    Text("Partes del Cuerpo Entrenadas")
-                }
-            }
+            BottomSection()
             DividerView()
             Box(
                 modifier = Modifier.fillMaxHeight(),
