@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -30,6 +32,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -87,7 +90,7 @@ fun DividerView() {
     Divider(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 15.dp), // Adjust padding as needed
+            .padding(vertical = 20.dp), // Adjust padding as needed
         thickness = 2.dp // You can set the thickness of the divider
     )
 }
@@ -109,19 +112,25 @@ fun TopSection() {
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Black
             )
-            Row {
+            Spacer(modifier = Modifier.height(7.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(5.dp)
+            ) {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "Icono de Persona")
-                Text(
-                    text = "ctevez",
-                    color = Color.Gray
-                )
+                Column {
+                    Text(
+                        text = "ctevez",
+                        color = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = "Crossfitero",
+                        color = Color.Gray
+                    )
+                }
             }
-            Text(
-                text = "Crossfitero",
-                color = Color.Gray
-            )
         }
     }
 }
@@ -140,6 +149,7 @@ fun MidSection() {
             color = Color.Gray
         )
     }
+    Spacer(modifier = Modifier.height(5.dp))
     Row(
         modifier = Modifier.padding(start = 15.dp, bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -165,9 +175,14 @@ fun BottomSection() {
             Text(
                 text = "22",
                 fontSize = 30.sp,
-                fontWeight = FontWeight.Black
+                fontWeight = FontWeight.Black,
+                textAlign = TextAlign.Center
             )
-            Text("Ejercicios Asignados")
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Ejercicios Asignados",
+                textAlign = TextAlign.Center
+            )
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -175,9 +190,14 @@ fun BottomSection() {
             Text(
                 text = "4",
                 fontSize = 30.sp,
-                fontWeight = FontWeight.Black
+                fontWeight = FontWeight.Black,
+                textAlign = TextAlign.Center
             )
-            Text("Partes del Cuerpo Entrenadas")
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Partes del Cuerpo Entrenadas",
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -188,7 +208,7 @@ fun ProfileScreen(){
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(7.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButtonView(Icons.Default.ArrowBack, "Back Button")
