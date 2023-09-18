@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.gimnasioulima.ui.theme.GimnasioULimaTheme
+import com.example.gimnasioulima.ui.theme.screens.LoginScreen
+import com.example.gimnasioulima.ui.theme.screens.PasswordChangeScreen
 import com.example.gimnasioulima.ui.theme.screens.ProfileScreen
 
 class MainActivity : ComponentActivity() {
@@ -23,9 +25,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    LoginScreen()
+                    LoginScreen()
 //                    PasswordChangeScreen()
-                    ProfileScreen()
+//                    ProfileScreen()
                 }
             }
         }
