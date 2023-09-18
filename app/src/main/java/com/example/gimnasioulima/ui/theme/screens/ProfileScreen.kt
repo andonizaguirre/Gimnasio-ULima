@@ -1,5 +1,6 @@
 package com.example.gimnasioulima.ui.theme.screens
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -118,7 +119,9 @@ fun TopSection() {
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
-                    contentDescription = "Icono de Persona")
+                    contentDescription = "Icono de Persona",
+                    tint = (if (isSystemInDarkTheme()) Orange40 else Color.Black)
+                    )
                 Column {
                     Text(
                         text = "ctevez",
@@ -143,7 +146,9 @@ fun MidSection() {
     ) {
         Icon(
             Icons.Default.Phone,
-            contentDescription = "Icono de Persona")
+            contentDescription = "Icono de Teléfono",
+            tint = (if (isSystemInDarkTheme()) Orange40 else Color.Black)
+        )
         Text(
             text = "999 888 777",
             color = Color.Gray
@@ -156,7 +161,9 @@ fun MidSection() {
     ) {
         Icon(
             Icons.Default.Email,
-            contentDescription = "Icono de Usuario")
+            contentDescription = "Icono de Correo",
+            tint = (if (isSystemInDarkTheme()) Orange40 else Color.Black)
+            )
         Text(
             text = "20041122@aloe.ulima.edu.pe",
             color = Color.Gray
