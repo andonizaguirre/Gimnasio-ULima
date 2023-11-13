@@ -115,7 +115,7 @@ fun SelectOptions(model: HomeScreenViewModel) {
 
 @Composable
 fun HomeScreen(navController: NavController, model: HomeScreenViewModel){
-    model.getBodyParts()
+    model.fetchBodyParts()
     model.listAllExercises()
     Column(
         modifier = Modifier

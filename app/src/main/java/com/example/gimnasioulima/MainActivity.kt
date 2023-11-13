@@ -1,12 +1,17 @@
 package com.example.gimnasioulima
 
 import android.os.Bundle
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
@@ -26,10 +31,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import com.example.gimnasioulima.components.BottomNavigationBar
 import com.example.gimnasioulima.components.TopNavigationBar
 import com.example.gimnasioulima.configs.BottomBarScreen
@@ -64,7 +72,8 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val blackList: List<String> = listOf("login", "password_change", "create_user", "profile")
-                    var showDialog by remember { mutableStateOf(false) }
+                    var aboutDialog by remember { mutableStateOf(false) }
+                    var shareDialog by remember { mutableStateOf(false) }
                     val currentRoute = navBackStackEntry?.destination?.route
                     Scaffold(
                         topBar = {
@@ -82,7 +91,7 @@ class MainActivity : ComponentActivity() {
                                         route = "",
                                         title = "Acerca de",
                                         onclick = {
-                                            showDialog = true
+                                            aboutDialog = true
                                         }
                                     ),
                                     TopBarScreen(
@@ -110,8 +119,11 @@ class MainActivity : ComponentActivity() {
                                         icon = Icons.Default.List
                                     ),
                                     BottomBarScreen(
-                                        route = "share",
+                                        route = "",
                                         title = "Compartir",
+                                        onclick = {
+                                            shareDialog = true
+                                        },
                                         icon = Icons.Default.Share
                                     ),
                                 )
@@ -120,10 +132,10 @@ class MainActivity : ComponentActivity() {
                         }
                     ) { innerPadding ->
                         Column(modifier = Modifier.padding(innerPadding)) {
-                            if (showDialog) {
+                            if (aboutDialog) {
                                 AlertDialog(
                                     onDismissRequest = {
-                                        showDialog = false
+                                        aboutDialog = false
                                     },
                                     title = {
                                         Text(text = "Integrantes de Grupo")
@@ -141,10 +153,80 @@ class MainActivity : ComponentActivity() {
                                         TextButton(
                                             onClick = {
                                                 // Lógica para manejar el botón de confirmación
-                                                showDialog = false
+                                                aboutDialog = false
                                             }
                                         ) {
                                             Text("Aceptar", color = Color.Black)
+                                        }
+                                    }
+                                )
+                            }
+//                            if (shareDialog) {
+//                                AlertDialog(
+//                                    onDismissRequest = {
+//                                        shareDialog = false
+//                                    },
+//                                    title = {
+//                                        Text(text = "\u200E \u200E \u200E\u200E \u200E \u200E \u200E \u200E \u200E \u200E \u200E \u200E \u200E \u200E  Gracias por compartir",)
+//                                    },
+//                                    text = {
+//                                        val imageUrl1 =
+//                                            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/800px-WhatsApp.svg.png"
+//                                        val imageUrl2 =
+//                                            "https://logowik.com/content/uploads/images/633_facebook_icon.jpg"
+//                                        val uri = parse(imageUrl1)
+//                                        val uri2 = parse(imageUrl2)
+//                                        val painter1= rememberImagePainter(
+//                                            data = uri.scheme + "://" + uri.host + uri.path + (if (uri.query != null) uri.query else ""),
+//                                            builder = {
+//                                                transformations(CircleCropTransformation())
+//                                            }
+//                                        )
+//                                        val painter2 = rememberImagePainter(
+//                                            data = uri2.scheme + "://" + uri2.host + uri2.path + (if (uri2.query != null) uri2.query else ""),
+//                                            builder = {
+//                                                transformations(CircleCropTransformation())
+//                                            }
+//                                        )
+//                                        Column {
+//                                            Row{
+//                                                Text("\u200E \u200E \u200E  WhatsApp",
+//                                                    modifier=Modifier.padding(20.dp))
+//                                                Text("\u200E \u200E \u200E  Facebook",
+//                                                    modifier=Modifier.padding(20.dp))
+//                                            }
+//                                            Row{
+//                                                Image(
+//                                                    painter = painter1,
+//                                                    contentDescription = null, // Set a proper content description if required
+//                                                    modifier = Modifier.size(
+//                                                        130.dp,
+//                                                        130.dp)
+//                                                        .clickable {
+//                                                            sendGitHubLinkToWhatsApp()
+//                                                        }
+//                                                )
+//                                                Image(
+//                                                    painter = painter2,
+//                                                    contentDescription = null, // Set a proper content description if required
+//                                                    modifier = Modifier.size(
+//                                                        120.dp,
+//                                                        120.dp)
+//                                                        .clickable {
+//                                                            sendGitHubLinkToFacebook()
+//                                                        }
+//                                                )
+//                                            }
+//                                        }
+//                                    },
+                                    confirmButton = {
+                                        TextButton(
+                                            onClick = {
+                                                // Lógica para manejar el botón de confirmación
+                                                shareDialog = false
+                                            }
+                                        ) {
+                                            Text("Regresar")
                                         }
                                     }
                                 )

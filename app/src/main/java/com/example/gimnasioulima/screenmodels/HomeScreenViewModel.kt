@@ -18,50 +18,17 @@ import kotlinx.coroutines.withContext
 class HomeScreenViewModel: ViewModel(){
     val bodyPartsMap = mutableMapOf<Int, String>()
 
-    fun getBodyParts(){
-        val bodyPartService: BodyPartService = BodyPartService()
-        var bodyPartList: ArrayList<BodyPart> = bodyPartService.bodyPartList
-        for(p: BodyPart in bodyPartList){
-            val id = p.id
-            val name = p.name
-            if(!bodyPartsMap.containsKey(id)){
-                bodyPartsMap[id] = name
-            }
-        }
-    }
-
-    private var _exercises = MutableStateFlow<List<Exercise>>(emptyList())
-    val exercises: StateFlow<List<Exercise>> get() = _exercises
-    fun setExercises(newItems: List<Exercise>) {
-        _exercises.value = newItems
-    }
-
-    fun listAllExercises(){
-        val service: ExerciseService = ExerciseService()
-        val list = service.listAll()
-        setExercises(list)
-    }
-
-    fun filterByBodyParts(bodyPartId: Int){
-        val service: ExerciseService = ExerciseService()
-        val list = service.exerciseListByBodyPartId(bodyPartId)
-        setExercises(list)
-    }
-
-    private val bodyPartService = BackendClient.buildService(BodyPartService::class.java)
-    private val coroutine: CoroutineScope = viewModelScope
-
-    private var _pokemons = MutableStateFlow<List<Pokemon>>(emptyList())
-    val pokemons: StateFlow<List<Pokemon>> get() = _pokemons
-    fun setPokemons(newItems: List<Pokemon>) {
-        _pokemons.value = newItems
-    }
-
-    val generationsMap = mutableMapOf<Int, String>()
-
-    fun fetchAll(){
-
-    }
+//    fun getBodyParts(){
+//        val bodyPartService: BodyPartService = BodyPartService()
+//        var bodyPartList: ArrayList<BodyPart> = bodyPartService.bodyPartList
+//        for(p: BodyPart in bodyPartList){
+//            val id = p.id
+//            val name = p.name
+//            if(!bodyPartsMap.containsKey(id)){
+//                bodyPartsMap[id] = name
+//            }
+//        }
+//    }
 
     fun fetchBodyParts(){
         coroutine.launch {
@@ -86,4 +53,25 @@ class HomeScreenViewModel: ViewModel(){
             }
         }
     }
+
+    private var _exercises = MutableStateFlow<List<Exercise>>(emptyList())
+    val exercises: StateFlow<List<Exercise>> get() = _exercises
+    fun setExercises(newItems: List<Exercise>) {
+        _exercises.value = newItems
+    }
+
+    fun listAllExercises(){
+        val service: ExerciseService = ExerciseService()
+        val list = service.listAll()
+        setExercises(list)
+    }
+
+    fun filterByBodyParts(bodyPartId: Int){
+        val service: ExerciseService = ExerciseService()
+        val list = service.exerciseListByBodyPartId(bodyPartId)
+        setExercises(list)
+    }
+
+    private val bodyPartService = BackendClient.buildService(BodyPartService::class.java)
+    private val coroutine: CoroutineScope = viewModelScope
 }

@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-class BodyPartService {
+//class BodyPartService {
 //    var bodyPartList: ArrayList<BodyPart> = ArrayList<BodyPart>()
 //
 //    constructor(){
@@ -18,9 +18,9 @@ class BodyPartService {
 //        bodyPartList.add(BodyPart(id = 7, name = "BICEPS"))
 //        bodyPartList.add(BodyPart(id = 8, name = "TRICEPS"))
 //    }
+//}
 
-    interface BodyPartService {
-        @GET("body_part/list") // Reemplaza con la URL de tu punto final
-        fun fetchAll(): Call<List<BodyPart>>
-    }
+interface BodyPartService {
+    @GET("body_part/list") // Reemplaza con la URL de tu punto final
+    fun fetchAll(): Call<List<BodyPart>>
 }
