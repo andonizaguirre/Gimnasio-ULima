@@ -219,18 +219,18 @@ class MainActivity : ComponentActivity() {
 //                                            }
 //                                        }
 //                                    },
-                                    confirmButton = {
-                                        TextButton(
-                                            onClick = {
-                                                // Lógica para manejar el botón de confirmación
-                                                shareDialog = false
-                                            }
-                                        ) {
-                                            Text("Regresar")
-                                        }
-                                    }
-                                )
-                            }
+//                                    confirmButton = {
+//                                        TextButton(
+//                                            onClick = {
+//                                                // Lógica para manejar el botón de confirmación
+//                                                shareDialog = false
+//                                            }
+//                                        ) {
+//                                            Text("Regresar")
+//                                        }
+//                                    }
+//                                )
+//                            }
                             NavHost(navController, startDestination = "home") {
                                 composable("splash") {
                                     SplashScreen {
