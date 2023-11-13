@@ -81,6 +81,4 @@ dependencies {
     // local storage
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.4.0") // Usa la versión más reciente disponible
-
-
 }

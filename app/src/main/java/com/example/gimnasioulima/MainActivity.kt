@@ -2,6 +2,8 @@ package com.example.gimnasioulima
 
 import android.os.Bundle
 import android.net.Uri
+import android.preference.PreferenceManager
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -24,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,33 +35,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.example.gimnasioulima.components.BottomNavigationBar
 import com.example.gimnasioulima.components.TopNavigationBar
 import com.example.gimnasioulima.configs.BottomBarScreen
 import com.example.gimnasioulima.configs.TopBarScreen
+import com.example.gimnasioulima.factories.LoginScreenViewModelFactory
 import com.example.gimnasioulima.screenmodels.CreateUserScreenViewModel
+import com.example.gimnasioulima.screenmodels.ExerciseDetailScreenViewModel
 import com.example.gimnasioulima.screenmodels.LoginScreenViewModel
 import com.example.gimnasioulima.screenmodels.HomeScreenViewModel
 import com.example.gimnasioulima.screenmodels.PasswordChangeScreenViewModel
+import com.example.gimnasioulima.screenmodels.RoutineScreenViewModel
 import com.example.gimnasioulima.screens.CreateUserScreen
+import com.example.gimnasioulima.screens.ExerciseDetailScreen
 import com.example.gimnasioulima.screens.HomeScreen
 import com.example.gimnasioulima.screens.LoginScreen
 import com.example.gimnasioulima.screens.PasswordChangeScreen
 import com.example.gimnasioulima.screens.ProfileScreen
+import com.example.gimnasioulima.screens.RoutineScreen
 import com.example.gimnasioulima.ui.theme.GimnasioULimaTheme
 import com.example.gimnasioulima.screens.SplashScreen
+import com.example.gimnasioulima.storages.UserStorage
 
 class MainActivity : ComponentActivity() {
-    private val loginScreenViewModel by viewModels<LoginScreenViewModel>()
+    private lateinit var preferencesManager: PreferenceManager
+    private val loginScreenViewModel: LoginScreenViewModel by viewModels {
+        LoginScreenViewModelFactory(applicationContext)
+    }
     private val passwordChangeScreenViewModel by viewModels<PasswordChangeScreenViewModel>()
     private val createUserScreenViewModel by viewModels<CreateUserScreenViewModel>()
     private val homeScreenViewModel by viewModels<HomeScreenViewModel>()
+    private val routineScreenViewModel by viewModels<RoutineScreenViewModel>()
+    private val exerciseDetailScreenViewModel by viewModels<ExerciseDetailScreenViewModel>()
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +87,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
-                    val blackList: List<String> = listOf("login", "password_change", "create_user", "profile")
+                    val blackList: List<String> = listOf("splash","login", "password_change", "create_user", "profile")
                     var aboutDialog by remember { mutableStateOf(false) }
                     var shareDialog by remember { mutableStateOf(false) }
                     val currentRoute = navBackStackEntry?.destination?.route
@@ -231,15 +247,11 @@ class MainActivity : ComponentActivity() {
 //                                    }
 //                                )
 //                            }
-                            NavHost(navController, startDestination = "home") {
+                            NavHost(navController, startDestination = "splash") {
                                 composable("splash") {
                                     SplashScreen {
                                         navController.navigate("login")
                                     }
-                                }
-                                composable("login") {
-                                    // Replace with your main screen Composable
-                                    LoginScreen(navController, loginScreenViewModel)
                                 }
                                 composable("password_change") {
                                     PasswordChangeScreen(navController, passwordChangeScreenViewModel)
@@ -252,6 +264,58 @@ class MainActivity : ComponentActivity() {
                                 }
                                 composable("profile") {
                                     ProfileScreen(navController)
+                                }
+                                composable(route = "routine?user_id={user_id}&member_id={member_id}", arguments = listOf(
+                                    navArgument("user_id") {
+                                        type = NavType.IntType
+                                        defaultValue = 0
+                                    },
+                                    navArgument("member_id") {
+                                        type = NavType.IntType
+                                        defaultValue = 0
+                                    }
+                                ), content = { entry ->
+                                    val memberId = entry.arguments?.getInt("member_id")!!
+                                    val userId = entry.arguments?.getInt("user_id")!!
+                                    routineScreenViewModel.memberId = memberId
+                                    routineScreenViewModel.userId = userId
+                                    routineScreenViewModel.fetchBodyPartsExercises()
+                                    routineScreenViewModel.fetchBodyParts()
+                                    routineScreenViewModel.fetchExercises()
+                                    RoutineScreen(routineScreenViewModel, navController)
+                                })
+                                composable(route = "exercise/edit?exercise_id={exercise_id}", arguments = listOf(
+                                    navArgument("exercise_id") {
+                                        type = NavType.IntType
+                                        defaultValue = 0
+                                    }
+                                ), content = { entry ->
+                                    val exerciseId = entry.arguments?.getInt("exercise_id")!!
+                                    exerciseDetailScreenViewModel.exerciseId = exerciseId
+                                    ExerciseDetailScreen(navController, exerciseDetailScreenViewModel)
+                                })
+                                composable(route = "login") {
+                                    Log.d("ROUTER", "login")
+                                    val dataStore = UserStorage(applicationContext)
+                                    if (dataStore.getUserId.collectAsState(initial = 9999).value != 0) {
+                                        val userId =
+                                            dataStore.getUserId.collectAsState(initial = 0).value
+                                        val memberId = userId
+                                        Log.d(
+                                            "ROUTER",
+                                            dataStore.getUserId.collectAsState(initial = 0).value.toString()
+                                        )
+                                        if (userId != null && memberId != null) {
+                                            routineScreenViewModel.memberId = userId
+                                            routineScreenViewModel.userId = userId
+                                            routineScreenViewModel.fetchBodyPartsExercises()
+                                            routineScreenViewModel.fetchBodyParts()
+                                            routineScreenViewModel.fetchExercises()
+                                            RoutineScreen(routineScreenViewModel, navController)
+                                        }
+                                    } else {
+                                        LoginScreen(navController, loginScreenViewModel)
+                                    }
                                 }
                             }
                         }

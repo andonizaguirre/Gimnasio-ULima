@@ -65,7 +65,7 @@ fun LoginForm(
             isPassword = true
         )
         CustomButton("LOGIN", RectangleShape) {
-            loginScreenViewModel.btnAccessPressed(navController)
+            loginScreenViewModel.access(navController)
         }
         if(loginScreenViewModel.message != "") {
             Text(loginScreenViewModel.message)

@@ -1,7 +1,15 @@
 package com.example.gimnasioulima.services
 
+import com.example.gimnasioulima.configs.HttpStdResponse
+import com.example.gimnasioulima.models.BodyPart
 import com.example.gimnasioulima.models.User
+import retrofit2.Call
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
 
+/*
 class UserService {
     var userList: ArrayList<User> = ArrayList<User>()
 
@@ -36,13 +44,24 @@ class UserService {
         userList.add(User(id = 28, user = "20183460", password = "12328", memberId = 28))
     }
 
-    fun checkUser(userName: String, password: String): Int {
+    fun checkUser(userName: String, password: String): Int{
         var resp: Int = 0
-        userList.forEach { user ->
-            if (user.user == userName && user.password == password) {
+        userList.forEach{user ->
+            if(user.user == userName && user.password == password){
                 resp = user.id
             }
         }
         return resp
     }
+
+*/
+
+interface UserService {
+    @FormUrlEncoded
+    @POST("user/validate")
+    fun findOne(
+        @Field("user") name: String?,
+        @Field("password") age: String?
+    ): Call<HttpStdResponse?>?
 }
+
