@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.gimnasioulima"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.gimnasioulima"
@@ -66,6 +66,21 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
+    //Navigation
+    val nav_version = "2.7.4"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+    //HTTP Images
     implementation("io.coil-kt:coil-compose:2.4.0")
+    //Markdown
+    implementation ("com.github.mukeshsolanki:MarkdownView-Android:2.0.0")
+    // launcher
+    implementation ("androidx.appcompat:appcompat:1.6.1")
+    // retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    // local storage
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel:2.4.0") // Usa la versión más reciente disponible
+
+
 }
